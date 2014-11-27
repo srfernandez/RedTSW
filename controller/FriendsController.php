@@ -4,14 +4,14 @@ require_once(__DIR__."/../core/ViewManager.php");
 require_once(__DIR__."/../model/User.php");
 require_once(__DIR__."/../controller/DBController.php");
 
-class UsersController extends DBController {
+class FriendsController extends DBController {
  
-  private $usuario;    
+  private $amigo;    
   
   public function __construct() {    
     parent::__construct();
     
-    $this->usuario = new User();
+    $this->amigo = new Friend();
   }
 
   public function login() {
@@ -62,7 +62,7 @@ public function register() {
     }
     $this->view->setVariable("user", $user);
     
-    $this->view->render("users", "login");
+    $this->view->render("users", "register");
     
   }
 
