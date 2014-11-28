@@ -43,16 +43,19 @@ class Friend {
 
   public function save($friends) {
     $stmt = $this->db->prepare("INSERT INTO friends values (?,?,?)");
-    $stmt->execute(array($friends->getFriend1(), $friends->getFriend2(), $friends->getStatus()));  
-	$stmt = $this->db->prepare("INSERT INTO friends values (?,?,?)");
-    $stmt->execute(array($friends->getFriend2(), $friends->getFriend1(), $friends->getStatus()));  
+    $stmt->execute(array($friends->getFriend1(), $friends->getFriend2(), $friends->getStatus()));
   }
   
   public function findAllFriends($username) {   
     $stmt = $this->db->query("SELECT * FROM friends WHERE friend1 = ?");  
 	$stmt->execute(array($username));	
     $friends_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    return $friends_db;
+    $friends=array();
+	
+	foreach ($friends_db as $friend) {
+		array_push($friends, new User($friend["username"], $friend["password"], $friend["mail"]));
+    }   
+	
+    return $friends;
   }
 }
