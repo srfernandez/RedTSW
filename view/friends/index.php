@@ -30,7 +30,6 @@
 	<h1>Friends</h1>
 </div>	
 <?php 
-	print_r($friends);
 			foreach ($friends as $friend): ?>
 			<h2><?=$friend->getUsername()?></h2>
 			

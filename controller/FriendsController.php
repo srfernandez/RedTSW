@@ -14,16 +14,13 @@ class FriendsController extends DBController {
     parent::__construct();
     $this->amigo = new Friend();
   }
+  
 
   public function show() {
 	$currentuser=$_SESSION["currentuser"];
-
 	$friends = $this->amigo->findAllFriends($currentuser);
-	
-	 if ($friends == NULL) {
-      throw new Exception("No se encontro ningun amigo de: ".$currentuser);
-	  $this->view->setVariable("friends", $friends);
-    }
+	$request = $this->amigo->findRequests($currentuser);
+	$this->view->setVariable("request", $request);
 	$this->view->setVariable("friends", $friends);
 	$this->view->render("friends","index");
   }
