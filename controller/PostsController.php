@@ -58,8 +58,7 @@ class PostsController extends DBController {
 		$this->view->render("posts", "dashboard");
 		
 	  }
-	
-	}
+
    
   
 }

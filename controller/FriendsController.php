@@ -12,16 +12,17 @@ class FriendsController extends DBController {
   
   public function __construct() {    
     parent::__construct();
-    
     $this->amigo = new Friend();
-
   }
 
   public function show() {
 	$currentuser=$_SESSION["currentuser"];
-	$friends =$this -> amigo ->findAllFriends($currentuser);
+
+	$friends = $this->amigo->findAllFriends($currentuser);
+	
 	 if ($friends == NULL) {
-      throw new Exception("No se encontro ningun amigo de: ".$currentuser->getUsername());
+      throw new Exception("No se encontro ningun amigo de: ".$currentuser);
+	  $this->view->setVariable("friends", $friends);
     }
 	$this->view->setVariable("friends", $friends);
 	$this->view->render("friends","index");
@@ -31,26 +32,24 @@ class FriendsController extends DBController {
     public function search() {
     $currentuser = $_SESSION["currentuser"];
 		$search = $this->amigo->findUsuarios($currentuser);
-		
 		if ($search == NULL) {
 		  throw new Exception("No hay usuarios");
 		}
-		
 		$this->view->setVariable("search", $search);
 	   
-		$this->view->render("friends", "search"); 
+		$this->view->render("friends", "index"); 
   }
   
      public function requests() { 
 		$currentuser = $_SESSION["currentuser"];
 		
-		$request = $this->friendDAO->findrequests($currentuser);
+		$request = $this->amigo->findRequests($currentuser);
 		
 		if ($request == NULL) {
-		  throw new Exception("There're no friendship request for: ".$currentuser->getUsername());
+		  throw new Exception("There're no friendship request for: ".$currentuser);
 		}
 		$this->view->setVariable("request", $request);
-		$this->view->render("friends", "request");    
+		$this->view->render("friends", "index");    
    
   }
   
@@ -62,7 +61,7 @@ class FriendsController extends DBController {
 		if (isset($_GET["username"])){
 			$friendU=$_GET["username"];
 			
-			$friendship = $this->amigo->findPeticion($currentuser, $friendU);
+			$friendship = $this->amigo->findPeticion($friendU, $currentuser);
 			
 			if ($friendship == NULL) {
 			  throw new Exception("There's no relationship between the users: ");
@@ -70,10 +69,10 @@ class FriendsController extends DBController {
 			
 			
 			$this->amigo->updateFriend($friendship);
-			$this->view->redirect("friends", "request");
+			$this->view->redirect("friends", "index");
 			 
 		}
-		$this->view->render("friends", "request");   
+		$this->view->render("friends", "index");   
    
    }
    
@@ -85,16 +84,16 @@ class FriendsController extends DBController {
 		if (isset($_GET["username"])){
 			$friendU=$_GET["username"];
 			
-			$friendship = $this->amigo->findPeticion($currentuser, $friendU);
+			$friendship = $this->amigo->findPeticion($friendU, $currentuser);
 			
 			if ($friendship == NULL) {
 			  throw new Exception("There's no relationship between the users: ");
 			}
 			
 			$this->amigo->deleteFriend($friendship);
-			$this->view->redirect("friends", "request"); 
+			$this->view->redirect("friends", "index"); 
 		}
-		$this->view->render("friends", "request"); 
+		$this->view->render("friends", "index"); 
    
    }
    
@@ -106,7 +105,7 @@ class FriendsController extends DBController {
 			
 			$this->amigo->save($currentuser, $friend);
 			
-			$this->view->redirect("friends", "search");
+			$this->view->redirect("friends", "index");
 			 
 		}
 	

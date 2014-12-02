@@ -14,7 +14,7 @@
 		</div>
 		
 		<div id="formularios">
-		<div id="lform"
+		<div id="lform">
 		<legend>Login</legend>
 		<form action = "index.php?controller=users&action=login" method = "POST">
 			<p>

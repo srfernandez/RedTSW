@@ -21,7 +21,7 @@ class UsersController extends DBController {
 	  if ($this->usuario->isValidUser($_POST["username"], $_POST["passwd"])) {
 
 		$_SESSION["currentuser"]=$_POST["username"];
-		$this->view->redirect("posts", "dashboard");  
+		$this->view->redirect("friends", "show");  
 	
 	  }else{
 		$errors = array();

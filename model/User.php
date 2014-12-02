@@ -14,7 +14,6 @@ class User {
     $this->username = $username;
     $this->passwd = $passwd; 
 	$this->mail = $mail;
-	
   }
    
   public function getMail() {
