@@ -28,12 +28,17 @@ class FriendsController extends DBController {
 
     public function search() {
     $currentuser = $_SESSION["currentuser"];
-		$search = $this->amigo->findUsuarios($currentuser);
+	if (isset($_POST['search'])) {
+		$busqueda=$_POST["friend"];
+		
+		$search = $this->amigo->findUsuarios($busqueda);
 		if ($search == NULL) {
 		  throw new Exception("No hay usuarios");
 		}
 		$this->view->setVariable("search", $search);
-	   
+		$this->view->redirect("friends","resultados");
+	
+	}
 		$this->view->render("friends", "index"); 
   }
   
@@ -55,57 +60,43 @@ class FriendsController extends DBController {
    
 		$currentuser = $_SESSION["currentuser"];
 		
-		if (isset($_GET["username"])){
+		if (isset($_POST["accept"])){
 			$friendU=$_GET["username"];
-			
+			print_r($friendU);
 			$friendship = $this->amigo->findPeticion($friendU, $currentuser);
 			
 			if ($friendship == NULL) {
 			  throw new Exception("There's no relationship between the users: ");
 			}
-			
-			
 			$this->amigo->updateFriend($friendship);
-			$this->view->redirect("friends", "index");
-			 
+			$this->view->redirect("friends", "show");
 		}
 		$this->view->render("friends", "index");   
-   
    }
    
      
-   public function rejectRequest() {
+   public function rejectRequest($solicitud) {
 	
 	$currentuser = $_SESSION["currentuser"];
-		
-		if (isset($_GET["username"])){
-			$friendU=$_GET["username"];
-			
+		if (isset($_POST["reject"])){
+			$friendU=$_GET["id"];
 			$friendship = $this->amigo->findPeticion($friendU, $currentuser);
-			
 			if ($friendship == NULL) {
 			  throw new Exception("There's no relationship between the users: ");
 			}
-			
 			$this->amigo->deleteFriend($friendship);
 			$this->view->redirect("friends", "index"); 
 		}
 		$this->view->render("friends", "index"); 
-   
    }
    
    public function requestFriendship(){
 	$currentuser = $_SESSION["currentuser"];
-		
 		if (isset($_GET["username"])){
 			$friend=$_GET["username"];
-			
 			$this->amigo->save($currentuser, $friend);
-			
-			$this->view->redirect("friends", "index");
-			 
+			$this->view->redirect("friends", "index");	 
 		}
-	
 		$this->view->render("friends", "search"); 
    
    }

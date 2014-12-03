@@ -44,5 +44,16 @@ class Friend {
     $stmt->execute(array($favorite->getPost(), $favorite->getUser()));  
   }
   
+  public function favoritos($usuario){
+	$stmt = $this->db->prepare("SELECT * from posts where idPost in (SELECT idPost from Favorites where username= ? ORDER BY dateFav DESC)");
+	$stmt -> execute(array($usuario));
+	$post_db = $stmt->fetch(PDO::FETCH_ASSOC);
+	$posts=array();
+	foreach($post_db as $post) {
+		array_push($posts, new Post($post["idPost"], $post["content"], new User($post["author"])));
+	}
+	return $posts;
+  
+  }
 
 }

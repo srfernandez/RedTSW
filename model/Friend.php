@@ -47,7 +47,7 @@ class Friend {
   }
   
   public function findAllFriends($currentuser) {   
-	$stmt = $this->db->prepare("SELECT * FROM users where username in (SELECT friend1 from Friends where friend2 = ? and status='1' UNION SELECT friend2 from Friends where friend1 = ? and status='1')");  
+	$stmt = $this->db->prepare("SELECT * FROM users where username in (SELECT friend1 from Friends where friend2 = ? and status='1' UNION SELECT friend2 from Friends where friend1 = ? and status='1') ORDER BY username");  
 	
 	$stmt->execute(array($currentuser, $currentuser));	
 	
@@ -61,7 +61,7 @@ class Friend {
   }
 
     public function findRequests($currentuser) {   
-    $stmt = $this->db->prepare("SELECT * FROM users where username in ( SELECT friend1 from friends where friend2 = ? and status='0')");  
+    $stmt = $this->db->prepare("SELECT * FROM users where username in ( SELECT friend1 from friends where friend2 = ? and status='0' ORDER BY dateFriend) ");  
 	$stmt->execute(array($currentuser));	
     $requests_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $requests=array();
@@ -71,15 +71,19 @@ class Friend {
     return $requests;
   }
   
-  public function findPeticion($user1,$user2){
-	$stmt = $this->db->prepare("SELECT * FROM Friends WHERE friend1 = ? and friend2 = ?");
-	$stmt->execute(array($user1,$user2));
+  public function findPeticion($user1,$currentuser){
+	$stmt = $this->db->prepare("SELECT * FROM Friends WHERE friend1= ? and friend2= ? and status = '0'");
+	$stmt->execute(array($user1,$currentuser));
 	$requests_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	return $requests_db;
+	$requests=array();
+	foreach ($requests_db as $request) {
+		array_push($requests, new Friend($request["friend1"], $request["friend2"], $request["status"]));
+    }   
+    return $requests;
   }
   
   public function deleteFriend($friendship){
-	$stmt = $this->db->prepare("DELETE * FROM Friends WHERE friend1= ? and friend2= ?");
+	$stmt = $this->db->prepare("DELETE FROM Friends WHERE friend1= ? and friend2= ?");
 	$stmt->execute(array($friendship->getFriend1(),$friendship->getFriend2()));
   }
   
@@ -87,4 +91,18 @@ class Friend {
 	$stmt = $this->db->prepare("UPDATE Friends SET status='1' WHERE friend1= ? and friend2= ?");
 	$stmt->execute(array($friendship->getFriend1(),$friendship->getFriend2()));
   }
+  
+  public function findUsuarios($username){
+		$stmt = $this->db->prepare("SELECT * FROM Users WHERE username LIKE ?");
+	$stmt->execute(array($username));
+	$search_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$result=array();
+	foreach ($search_db as $search) {
+		array_push($result, new User($search["username"], $search["passwd"], $search["mail"]));
+    }   
+    return $result;
+  
+  }
+  
+  
 }

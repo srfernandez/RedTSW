@@ -15,11 +15,11 @@
 		
 		<div id="formularios">
 		<div id="lform">
-		<legend>Login</legend>
+		<legend>Accede</legend>
 		<form action = "index.php?controller=users&action=login" method = "POST">
 			<p>
-			<label>User </label></br> <input type="text" name= "username" /></br>
-			<label>Password </label></br> <input type="password" name= "passwd" /></br>
+			<label>Usuario </label></br> <input type="text" name= "username" /></br>
+			<label>Contraseña </label></br> <input type="password" name= "passwd" /></br>
 			</p>
 			<p align="right"><input type = "submit" value="Login" /></p>
 		
@@ -27,11 +27,11 @@
 		
 		</div>
 		<div id="rform">
-		<legend>Register here!</legend>
+		<legend>Registrate aquí</legend>
 		<form action = "index.php?controller=users&action=register" method = "POST">
 			<p>
-			<label>User </label></br> <input type="text" name= "username" /></br>
-			<label>Password </label></br> <input type="password" name= "passwd" /></br>
+			<label>Usuario </label></br> <input type="text" name= "username" /></br>
+			<label>Contraseña </label></br> <input type="password" name= "passwd" /></br>
 			<label>Email </label></br> <input type="text" name= "mail" /></br>
 			</p>
 			<p align="right"><input type = "submit" value="Register" /></p>

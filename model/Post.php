@@ -9,7 +9,7 @@ class Post {
   private $content;
   private $author;
    
-   public function __construct($idPost=NULL, $content=NULL,User $author=NULL) {
+   public function __construct($idPost=NULL, $content=NULL,$author=NULL) {
 	$this->db = PDOConnection::getInstance();
     $this->idPost = $idPost;
     $this->content = $content; 
@@ -32,7 +32,7 @@ class Post {
     return $this->author;
   }
 
-  public function setAuthor(User $author) {
+  public function setAuthor($author) {
     $this->author = $author;
   }
   
@@ -41,42 +41,23 @@ class Post {
     $stmt = $this->db->prepare("INSERT INTO posts values (?,?)");
     $stmt->execute(array($post->getContent(), $post->getAuthor()));  
   }
-  
-  public function findAll() {   
-    $stmt = $this->db->query("SELECT * FROM posts, users WHERE users.username = posts.author");    
-    $posts_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
-   
-    $posts = array();
-    
-    foreach ($posts_db as $post) {
-      $author = new User($post["username"]);
-      array_push($posts, new Post($post["idPost"], $post["content"], $author));
-    }   
-    return $posts;
-  }
-  
-    public function findByAuthor($author){
-    $stmt = $this->db->prepare("SELECT * FROM posts WHERE author=?");
-    $stmt->execute(array($author));
-    $post = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if(!sizeof($post) == 0) {
-      return new Post(
-	$post["idPost"],
-	$post["content"],
-	new User($post["author"]));
-    } else {
-      return NULL;
-    }   
-  }
 
    public function update($post) {
     $stmt = $this->db->prepare("UPDATE posts set content=? where id=?");
     $stmt->execute(array( $post->getContent(), $post->getIdPost()));    
   }
 
+  public function findPosts($usuario){
+	$stmt = $this->db-> prepare("SELECT * FROM posts where author in ( SELECT friend1 from friends where friend2 = ? and status='1' UNION SELECT friend2 from friends where friend1 = ? and status='1' ) UNION SELECT * from posts where author = ? order by datePost DESC");
+	$stmt -> execute(array($usuario,$usuario, $usuario));
+	$post_db = $stmt->fetch(PDO::FETCH_ASSOC);
+	$posts=array();
+	foreach($post_db as $post) {
+		array_push($posts, new Post($post["idPost"], $post["content"],$post["author"]));
+	}
+	if(!empty($posts)){
+	return $posts;}
+	else{ return NULL;}
   
-
-  
-
+  }
 }
