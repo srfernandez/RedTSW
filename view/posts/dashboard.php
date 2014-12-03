@@ -11,8 +11,8 @@
 	<h1>Nuevo Post</h1>
 </div>	
 		<form action="index.php?controller=posts&action=AddPost" method="POST">
-		<input type="textarea" name= "post"/>
-		<input type="submit" id= "search" name ="search" value="Añadir"/>
+		<input type="text" name= "content"/>
+		<input type="submit" id= "add" name ="add" value="Añadir"/>
 		</form>
 	
 <div>

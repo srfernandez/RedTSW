@@ -34,16 +34,17 @@ class PostsController extends DBController {
 	public function addPost(){
 		$posts= new Post();
 		$currentuser=$_SESSION["currentuser"];
-		if (isset($_POST["content"])){ // reaching via HTTP Post...
+		if (isset($_POST["add"])){ // reaching via HTTP Post...
 		  $posts->setContent($_POST["content"]);
 		  $posts->setAuthor($currentuser);
 		  
 		  try{
 			
-			if ($posts->validFormat()){
-			  $this->post->save($post);
+			if ($posts->isValid()){
+				print_r("Hola");
+			  $this->post->save($posts);
 			 
-			  $this->view->redirect("posts", "dashboard");	  
+			  $this->view->redirect("posts", "index");	  
 			} else {
 			  $errors = array();
 			  $errors["general"] = "Error al publicar el post";
@@ -56,9 +57,7 @@ class PostsController extends DBController {
 		$this->view->setVariable("errors", $errors);
 		  }
 		}
-		
 		$this->view->setVariable("posts", $posts);
-		
 		$this->view->render("posts", "dashboard");
 		
 	  }
@@ -72,7 +71,7 @@ class PostsController extends DBController {
       throw new Exception("No se encontro ningun favorito de: ".$currentuser);
     }
 	$this->view->setVariable("favoritos", $favoritos);
-	$this->view->render("posts","dashboard");
+	$this->view->render("favorito","dashboard");
 	}
    
   
