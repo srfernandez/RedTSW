@@ -10,7 +10,7 @@ class Friend {
   private $friend2;
   private $status;
    
-   public function __construct(User $friend1=NULL, User $friend2=NULL, $status=NULL) {
+   public function __construct($friend1=NULL, $friend2=NULL, $status=NULL) {
 	$this->db = PDOConnection::getInstance();
     $this->friend1 = $friend1;
     $this->friend2 = $friend2; 
@@ -21,7 +21,7 @@ class Friend {
     return $this->friend1;
   }
 
-  public function setFriend1(User $friend1) {
+  public function setFriend1($friend1) {
     $this->friend1 = $friend1;
   }
   
@@ -29,7 +29,7 @@ class Friend {
     return $this->friend2;
   }
 
-  public function setFriend2(User $friend2) {
+  public function setFriend2($friend2) {
     $this->friend2 = $friend2;
   }
  
@@ -41,9 +41,9 @@ class Friend {
     $this->status = $status;
   }
 
-  public function save($friends) {
-    $stmt = $this->db->prepare("INSERT INTO friends values (?,?)");
-    $stmt->execute(array($friends->getFriend1(), $friends->getFriend2()));
+  public function save($friend1, $friend2) {
+    $stmt = $this->db->prepare("INSERT INTO friends (friend1, friend2) values (?,?)");
+    $stmt->execute($friend1, $friend2);
   }
   
   public function findAllFriends($currentuser) {   
@@ -79,21 +79,25 @@ class Friend {
 	foreach ($requests_db as $request) {
 		array_push($requests, new Friend($request["friend1"], $request["friend2"], $request["status"]));
     }   
-    return $requests;
+	if(!empty($requests)){
+		return $requests;
+	}
+	else{ return NULL;}
+    
   }
   
-  public function deleteFriend($friendship){
+  public function deleteFriend($friend, $user){
 	$stmt = $this->db->prepare("DELETE FROM Friends WHERE friend1= ? and friend2= ?");
-	$stmt->execute(array($friendship->getFriend1(),$friendship->getFriend2()));
+	$stmt->execute(array($friend, $user));
   }
   
-  public function updateFriend($friendship){
+  public function updateFriend($friend, $user){
 	$stmt = $this->db->prepare("UPDATE Friends SET status='1' WHERE friend1= ? and friend2= ?");
-	$stmt->execute(array($friendship->getFriend1(),$friendship->getFriend2()));
+	$stmt->execute(array($friend, $user));
   }
   
   public function findUsuarios($username){
-		$stmt = $this->db->prepare("SELECT * FROM Users WHERE username LIKE ?");
+		$stmt = $this->db->prepare("SELECT * FROM Users WHERE username = ?");
 	$stmt->execute(array($username));
 	$search_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	$result=array();
@@ -101,7 +105,6 @@ class Friend {
 		array_push($result, new User($search["username"], $search["passwd"], $search["mail"]));
     }   
     return $result;
-  
   }
   
   

@@ -4,14 +4,14 @@ require_once(__DIR__."/../core/ValidationException.php");
 require_once(__DIR__."/../model/User.php");
 require_once(__DIR__."/../model/Post.php");
 
-class Friend {
+class Favorite {
 
   private $db;
   private $id;  
   private $post;
   private $username;
    
-   public function __construct($id=NULL, Post $post=NULL,User $username=NULL) {
+   public function __construct($id=NULL, $post=NULL, $username=NULL) {
 	$this->db = PDOConnection::getInstance();
     $this->id = $id;
     $this->post = $post; 
@@ -25,7 +25,7 @@ class Friend {
    public function getPost() {
     return $this->post;
   }
-  public function setPost(Post $post) {
+  public function setPost($post) {
     $this->post = $post;
   }
   
@@ -33,27 +33,18 @@ class Friend {
     return $this->username;
   }
 
-  public function setUser(User $username) {
+  public function setUser($username) {
     $this->username = $username;
   }
- 
- 
-
-  public function save($favorite) {
-    $stmt = $this->db->prepare("INSERT INTO favorites values (?,?)");
-    $stmt->execute(array($favorite->getPost(), $favorite->getUser()));  
+   public function incrementar($post){
+	$stmt = $this->db->prepare("UPDATE posts SET numLikes= numLikes+1 WHERE idPost = ?");
+	$stmt -> execute(array($post));
   }
+
   
-  public function favoritos($usuario){
-	$stmt = $this->db->prepare("SELECT * from posts where idPost in (SELECT idPost from Favorites where username= ? ORDER BY dateFav DESC)");
-	$stmt -> execute(array($usuario));
-	$post_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	$posts=array();
-	foreach($post_db as $post) {
-		array_push($posts, new Post($post["idPost"], $post["content"],$post["author"], $post["numLikes"], $post["datePost"]));
-	}
-	return $posts;
-  
+ public function save($post,$username) {
+    $stmt = $this->db->prepare("INSERT INTO favorites (post, username) values (?,?)");
+    $stmt->execute(array($post, $username));  
   }
 
 }

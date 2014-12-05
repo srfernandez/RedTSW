@@ -25,7 +25,8 @@ if($posts == NULL): ?>
 <?php foreach ($posts as $post): ?>
 		<h2><?=$post-> getAuthor()?></h2>
 		<?=$post -> getContent()?>
-		<a href="index.php?controller=favorite&action=addFav">Añadir Favorito</a>
+		<?=$post -> getLikes()?>
+		<a href="index.php?controller=favorites&action=addFav&id=<?=$post->getidPost()?>">Añadir Favorito</a>
 		
 <?php endforeach; ?>
 <?php endif; ?>

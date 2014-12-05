@@ -22,11 +22,7 @@ class PostsController extends DBController {
 	if (!isset($currentuser)) {
       throw new Exception("Not in session. This action requires login");
     }
-	print_r($currentuser);
 	$posts =$this ->post->findPosts($currentuser);
-	 if ($posts == NULL) {
-      throw new Exception("No hay ningun post para: ".$currentuser);
-    }
 	$this->view->setVariable("posts", $posts);
 	$this->view->render("posts","dashboard");
   }
@@ -37,13 +33,10 @@ class PostsController extends DBController {
 		if (isset($_POST["add"])){ // reaching via HTTP Post...
 		  $posts->setContent($_POST["content"]);
 		  $posts->setAuthor($currentuser);
-		  
+		 
 		  try{
-			
-			if ($posts->isValid()){
-				print_r("Hola");
+			if ($this->post->isValid($posts)){
 			  $this->post->save($posts);
-			 
 			  $this->view->redirect("posts", "index");	  
 			} else {
 			  $errors = array();
@@ -63,15 +56,13 @@ class PostsController extends DBController {
 	  }
 	
 	public function favoritos(){
-	if (!isset($this->currentuser)) {
+	$currentuser=$_SESSION["currentuser"];
+	if (!isset($currentuser)) {
       throw new Exception("Not in session. This action requires login");
     }
-	$favoritos =$this -> post ->findPosts($this->currentuser);
-	 if ($posts == NULL) {
-      throw new Exception("No se encontro ningun favorito de: ".$currentuser);
-    }
+	$favoritos =$this -> post ->favoritos($currentuser);
 	$this->view->setVariable("favoritos", $favoritos);
-	$this->view->render("favorito","dashboard");
+	$this->view->render("posts","favoritos");
 	}
    
   
