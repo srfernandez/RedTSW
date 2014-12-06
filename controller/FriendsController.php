@@ -49,9 +49,12 @@ class FriendsController extends DBController {
   
   public function requestFriendship(){
 	$currentuser = $_SESSION["currentuser"];
-	if(isset($_POST["solicitar"])){
+	//if(isset($_POST["solicitar"])){
+		if(isset($_GET["id"])){
 		$friend=$_GET["id"];
-		if($this->amigo->findPeticion($friend, $currentuser) == NULL){
+		
+		if($this->amigo->findPeticion($currentuser, $friend) == NULL){
+		
 			$this->amigo->save($currentuser, $friend);
 			$this->view->setFlash("Solicitud de amistad a ".$friend." enviada correctamente");
 			$this->view->setVariable("search", NULL);

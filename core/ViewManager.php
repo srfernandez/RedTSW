@@ -191,7 +191,28 @@ class ViewManager {
   
   
   /// RENDERING
- 
+   /**
+   * Renders the layout
+   * 
+   * It basically includes the /view/layouts/[layout].php.
+   * Normally, inside the layout file, there will be calls to 
+   * retrieve fragment contents, especially the default fragment
+   * contents.
+   */
+  private function renderLayout() {
+    // move to layout fragment so
+    // all previously generated output contents
+    // were saved in the $this->fragmentContents
+    // array
+    $this->moveToFragment("layout");
+    
+    // draw the layout. Inside the layout we use this
+    // view manager to retrieve previously generated contents,
+    // specially the DEFAULT_FRAGMENT (the main content)
+    include(__DIR__."/../view/layouts/".$this->layout.".php"); 
+    
+    ob_flush();
+  }
   
   /**
    * Renders an specified view of a specified controller
@@ -210,6 +231,7 @@ class ViewManager {
    */
   public function render($controller, $viewname) {
     include(__DIR__."/../view/$controller/$viewname.php");
+	 $this->renderLayout();
   }
   
   /**

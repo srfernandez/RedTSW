@@ -43,7 +43,8 @@ class Friend {
 
   public function save($friend1, $friend2) {
     $stmt = $this->db->prepare("INSERT INTO friends (friend1, friend2) values (?,?)");
-    $stmt->execute($friend1, $friend2);
+	$stmt->execute(array($friend1, $friend2));
+	
   }
   
   public function findAllFriends($currentuser) {   
