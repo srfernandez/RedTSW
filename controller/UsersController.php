@@ -12,6 +12,7 @@ class UsersController extends DBController {
     parent::__construct();
     
     $this->usuario = new User();
+	 $this->view->setLayout("welcome");  
   }
 
   public function login() {

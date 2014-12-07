@@ -36,6 +36,7 @@ class ViewManager {
    * @var mixed
    */
   private $fragmentContents = array();
+  private $layout = "default";
   
   /**
    * Values of view variables
@@ -232,6 +233,9 @@ class ViewManager {
   public function render($controller, $viewname) {
     include(__DIR__."/../view/$controller/$viewname.php");
 	 $this->renderLayout();
+  }
+   public function setLayout($layout) {
+    $this->layout = $layout;
   }
   
   /**

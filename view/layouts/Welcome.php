@@ -16,17 +16,14 @@
   <body>
 	<div id="container">
     <div id="encabezado">
-	<?php
-      include(__DIR__."/language_select_element.php");
-      ?>
     </div>
-    <main>
+    <div id="formularios">
       <!-- flash message -->
       <div id="flash">
 			<?= $view->popFlash() ?>
       </div>
       <?= $view->getFragment(ViewManager::DEFAULT_FRAGMENT) ?>
-    </main>
+    </div>
 	</div>
   </body>
 </html>
