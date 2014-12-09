@@ -64,6 +64,19 @@ class PostsController extends DBController {
 	$this->view->setVariable("favoritos", $favoritos);
 	$this->view->render("posts","favoritos");
 	}
+	
+	public function indexAuthor(){
+		$currentuser= $_SESSION["currentuser"];
+	if (!isset($currentuser)) {
+      throw new Exception("Not in session. This action requires login");
+    }
+	$author = $_GET["id"];
+	$postsAuthor =$this ->post->findByAuthor($author);
+	$this->view->setVariable("postsAuthor", $postsAuthor);
+	$this->view->setVariable("author", $author);
+	$this->view->render("posts","postUsuario");
+	
+	}
    
   
 }

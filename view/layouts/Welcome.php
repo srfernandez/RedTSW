@@ -16,6 +16,8 @@
   <body>
 	<div id="container">
     <div id="encabezado">
+	<a href="index.php?controller=language&amp;action=change&amp;lang=es"><?=i18n("Espanol")?></a>
+			<a href="index.php?controller=language&amp;action=change&amp;lang=en"><?=i18n("Ingles")?></a>
     </div>
     <div id="formularios">
       <!-- flash message -->

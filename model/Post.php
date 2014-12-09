@@ -105,5 +105,15 @@ class Post {
 	return $posts;
   }
   
+  public function findByAuthor($usuario){
+	$stmt = $this->db->prepare("SELECT * from posts where author= ?");
+	$stmt -> execute(array($usuario));
+	$post_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$posts=array();
+	foreach($post_db as $post) {
+		array_push($posts, new Post($post["idPost"], $post["content"],$post["author"], $post["numLikes"], $post["datePost"]));
+	}
+	return $posts;
+  }
 
 }

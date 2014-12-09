@@ -17,8 +17,11 @@
   <body>    
 	<div id="container">
 		<div id="encabezado">
+			<a href="index.php?controller=language&amp;action=change&amp;lang=es"><?=i18n("Espanol")?></a>
+			<a href="index.php?controller=language&amp;action=change&amp;lang=en"><?=i18n("Ingles")?></a>
 			<div id="apagar">
-				<a href="index.php?controller=users&action=logout"></a>
+				
+				<a href="index.php?controller=users&action=logout"><img src="css/apagar.png"  alt="LogOut" height="30" width="30" id="logout"></a>
 			</div>
 			
 		</div>
@@ -26,19 +29,18 @@
 		
 			<div id="right_column">
 				<div id="perfil">
-					<input type= "button" name="perfil" OnClick="#">
-					<a href="#"><?=$_SESSION["currentuser"]?></a>
+					<a href="index.php?controller=posts&action=indexAuthor&id=<?=$_SESSION["currentuser"]?>"><img src="css/Usuario-Icono.jpg"  alt="Usuario" height="100" width="100" id="usuario"> <?=$_SESSION["currentuser"]?></a>
 				</div>
 
 				<ul id="sidebar">
 					<li id="enlaceMuro">
-					<a href="index.php?controller=posts&action=index">MURO</a>
+					<a href="index.php?controller=posts&action=index"><?=i18n("MURO")?></a>
 					</li>
 					<li id="enlaceFavoritos">
-					<a href="index.php?controller=posts&action=favoritos" >FAVORITOS</a>
+					<a href="index.php?controller=posts&action=favoritos" ><?=i18n("FAVORITOS")?></a>
 					</li>
 					<li id="Amigos">
-					<a href="index.php?controller=friends&action=show">AMIGOS</a>
+					<a href="index.php?controller=friends&action=show"><?=i18n("AMIGOS")?></a>
 					</li>
 					</li>
 				</ol>

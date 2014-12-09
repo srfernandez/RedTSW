@@ -24,7 +24,7 @@ class FriendsController extends DBController {
 		$busqueda=$_POST["friend"];
 		$search = $this->amigo->findUsuarios($busqueda);
 		if ($search == NULL) {
-		  throw new Exception("No hay usuarios");
+		  $this->view->setFlash("No existe el usuario");
 		}
 		$this->view->setVariable("search", $search);
 		//$this->view->redirect("friends","resultados");

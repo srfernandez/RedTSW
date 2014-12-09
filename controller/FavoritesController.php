@@ -22,10 +22,15 @@ class FavoritesController extends DBController {
 	if(isset($_GET["id"])){
 		$post=$_GET["id"];
 		$currentuser=$_SESSION["currentuser"];
+		if(!$this->favorito->favoritoExists($post,$currentuser)){
 		$this->favorito->save($post,$currentuser);
 		$this->favorito->incrementar($post);
 		$this->view->redirect("posts","index");
-		
+		}else{
+			$this->favorito->eliminar($post, $currentuser);
+			$this->favorito->restar($post);
+			$this->view->redirect("posts","index");
+		}
 		
 	}
 	$this->view->render("posts","dashboard");
