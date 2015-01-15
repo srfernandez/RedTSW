@@ -58,8 +58,6 @@ if($friends == NULL): ?>
 			foreach ($friends as $friend): ?>
 			<div id="usuarios">
 			<h2><a href="index.php?controller=posts&action=indexAuthor&id=<?=$friend->getUsername()?>"><img src="css/Usuario-Icono.jpg"  alt="Usuario" height="50" width="50" id="usuario"> <?=$friend->getUsername()?></a></h2>
-			<form action="index.php?controller=friends&action=deleteFriend&id=<?=$friend->getUsername()?>" method="POST">
-		<input type="submit" id="delete" name="delete" value="<?=i18n("Eliminar")?>"/>
 		</form>
 			</div>
 			

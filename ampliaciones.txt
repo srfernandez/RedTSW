@@ -1,3 +1,5 @@
 Muro de favoritos (0.5)
+
 Muro de un amigo (0.1)
+
 Ya no me gusta(0.1)

@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__."/../core/ViewManager.php");
-require_once(__DIR__."/../model/Favorite.php");
+require_once(__DIR__."/../model/FavoriteMapper.php");
 require_once(__DIR__."/../model/Post.php");
 require_once(__DIR__."/../controller/DBController.php");
 
@@ -13,8 +13,7 @@ class FavoritesController extends DBController {
   public function __construct() {    
     parent::__construct();
     
-    $this->favorito = new Favorite();
-	$this->post= new Post();
+    $this->favorito = new FavoriteMapper();
 
   }
   

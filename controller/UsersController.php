@@ -2,6 +2,7 @@
 
 require_once(__DIR__."/../core/ViewManager.php");
 require_once(__DIR__."/../model/User.php");
+require_once(__DIR__."/../model/UserMapper.php");
 require_once(__DIR__."/../controller/DBController.php");
 
 class UsersController extends DBController {
@@ -11,7 +12,7 @@ class UsersController extends DBController {
   public function __construct() {    
     parent::__construct();
     
-    $this->usuario = new User();
+    $this->usuario = new UserMapper();
 	 $this->view->setLayout("welcome");  
   }
 

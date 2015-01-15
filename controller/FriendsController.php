@@ -2,7 +2,7 @@
 
 require_once(__DIR__."/../core/ViewManager.php");
 require_once(__DIR__."/../model/User.php");
-require_once(__DIR__."/../model/Friend.php");
+require_once(__DIR__."/../model/FriendMapper.php");
 require_once(__DIR__."/../controller/DBController.php");
 
 class FriendsController extends DBController {
@@ -12,7 +12,7 @@ class FriendsController extends DBController {
   
   public function __construct() {    
     parent::__construct();
-    $this->amigo = new Friend();
+    $this->amigo = new FriendMapper();
   }
   
 
@@ -87,7 +87,7 @@ class FriendsController extends DBController {
    }
    
      
-   public function rejectRequest($solicitud) {
+   public function rejectRequest() {
 	
 	$currentuser = $_SESSION["currentuser"];
 		if (isset($_POST["reject"])){

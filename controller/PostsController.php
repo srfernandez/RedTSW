@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__."/../core/ViewManager.php");
-require_once(__DIR__."/../model/User.php");
+require_once(__DIR__."/../model/PostMapper.php");
 require_once(__DIR__."/../model/Post.php");
 require_once(__DIR__."/../controller/DBController.php");
 
@@ -13,7 +13,7 @@ class PostsController extends DBController {
   public function __construct() {    
     parent::__construct();
     
-    $this->post = new Post();
+    $this->post = new PostMapper();
 
   }
 
